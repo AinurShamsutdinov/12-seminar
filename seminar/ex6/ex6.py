@@ -2,10 +2,32 @@
 # 📌 Изменяем класс прямоугольника.
 # 📌 Заменяем пару декораторов проверяющих длину и ширину на дескриптор с валидацией размера.
 
+class Validator:
+    """Class validator for rectangle"""
+    def __set_name__(self, owner, name):
+        self.param_name = '_' + name
+
+    def __set_name__(self, owner, name):
+        self.param_name = '_' + name
+
+    def __get__(self, instance, owner):
+        return getattr(instance, self.param_name)
+
+    def __set__(self, instance, value):
+        self.validate(value)
+        setattr(instance, self.param_name, value)
+
+    def validate(self, value):
+        if not isinstance(value, int):
+            raise TypeError(f'Value {value} should be a number')
+        if value is not None and value < 0:
+            raise ValueError(f'Value {value} should be bigger than 0')
 
 class Rectangle(object):
     """Class to represent a rectangle"""
-    __slots__ = ('_length', '_depth')
+
+    _length = Validator()
+    _depth = Validator()
 
     def __init__(self, length, depth):
         """Initiate a rectangle"""
@@ -128,3 +150,10 @@ print(f'{second_rec = }')
 print(f'{third_rec = }')
 
 print(first_rec.__dict__)
+
+# validation_rec_1 = Rectangle(-20, 30)
+# validation_rec_2 = Rectangle(-20, -30)
+# validation_rec_3 = Rectangle(20, -30)
+# validation_rec_4 = Rectangle('-20', 30)
+# validation_rec_5 = Rectangle('-20', '30')
+validation_rec_6 = Rectangle(20, '30')

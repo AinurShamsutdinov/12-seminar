@@ -12,22 +12,16 @@
 
 
 class Rectangle(object):
+    __slots__ = ('_length', '_depth')
+
     """Class to represent a rectangle"""
-    length: int
-    depth: int
+    _length: int
+    _depth: int
 
     def __init__(self, length, depth):
         """Initiate a rectangle"""
-        if (length is None) or (depth is None):
-            if length is not None:
-                self.length = length
-                self.depth = length
-            elif depth is not None:
-                self.length = depth
-                self.depth = depth
-        elif (length is not None) and (depth is not None):
-            self.length = length
-            self.depth = depth
+        self._length = length
+        self._depth = depth
 
     def perimeter(self):
         """Calculate the perimeter of a rectangle"""
@@ -99,11 +93,11 @@ class Rectangle(object):
 
     @property
     def length(self):
-        return self.length
+        return self._length
 
     @property
     def depth(self):
-        return self.depth
+        return self._depth
 
     @length.setter
     def length(self, value):
@@ -112,7 +106,7 @@ class Rectangle(object):
         elif value < 0:
             raise ValueError(f'Length can\'t be less than zero {value}')
         else:
-            self.length = value
+            self._length = value
 
     @depth.setter
     def depth(self, value):
@@ -121,7 +115,7 @@ class Rectangle(object):
         elif value < 0:
             raise ValueError(f'Depth can\'t be less than zero {value}')
         else:
-            self.depth = value
+            self._depth = value
 
 
 first_rec = Rectangle(10, 20)
@@ -143,3 +137,5 @@ print('third >= second ', third_rec >= second_rec)
 print(f'{first_rec = }')
 print(f'{second_rec = }')
 print(f'{third_rec = }')
+
+print(first_rec.__dict__)
